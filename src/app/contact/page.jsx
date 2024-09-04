@@ -1,5 +1,21 @@
+import Image from "next/image";
+import styles from './contact.module.css';
+
 const Contact = () => {
-  return <div>Contact page</div>
+  return <div className={styles.container}>
+    <div className={styles.imgContainer}>
+      <Image alt="contact" src="/contact.png" className={styles.img} fill />
+    </div>
+    <div className={styles.formContainer}>
+      <form className={styles.form}>
+        <input type="text" placeholder="Name and Surname"></input>
+        <input type="text" placeholder="Email Address"></input>
+        <input type="text" placeholder="Phone Number (Optional)"></input>
+        <textarea name="" id="" cols="30" rows="10" placeholder="Message"></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </div>
 }
 
 export default Contact;

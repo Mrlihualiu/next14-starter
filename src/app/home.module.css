@@ -1,0 +1,53 @@
+.container {
+  display: flex;
+  gap: 100px;
+}
+
+.textContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.title {
+  font-size: 66px;
+}
+
+.desc {
+  font-size: 20px;;
+}
+
+.btns {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 15px;
+  min-width: 100px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn:first-child {
+  background-color: var(--btn);
+  color: var(--bg);
+}
+
+.brands {
+  width: 500px;
+  height: 50px;
+  position: relative;
+  filter: grayscale(1);
+}
+
+.imgContainer {
+  flex: 1;
+  position: relative;
+}
+
+.brandsImg {
+  width: 100px;
+}

@@ -9,3 +9,38 @@
   cursor: pointer;
   font-weight: bold;
 }
+
+.mobileLinks {
+  display: none;
+}
+
+.menuButton {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .links {
+    display: none;
+  }
+
+  .mobileLinks {
+    width: 50%;
+    height: calc(100vh - 100px);
+    background-color: var(--bg);
+    position: absolute;
+    right: 0;
+    top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    overflow: hidden;
+    transition: height 0.5s ease-in;
+  }
+
+  .menuButton {
+    display: flex;
+    cursor: pointer;
+  }
+}
