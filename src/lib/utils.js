@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 
 const contection = {}
-const dbUrl = 'mongodb+srv://chenxi:liu19921105@cluster0.ijw1i.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+const DB_URL = 'mongodb+srv://chenxi:liu19921105@cluster0.ijw1i.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
 
 
 export const connectionToDb = async () => {
@@ -10,7 +10,7 @@ export const connectionToDb = async () => {
       console.log("Already connected to database");
       return;
     }
-    const connectUrl = process.env.MONGO || dbUrl
+    const connectUrl = process.env.MONGO || DB_URL
     const db = await mongoose.connect(connectUrl);
     contection.isConnected = db.connections[0].readyState;
     console.log('database connected!');

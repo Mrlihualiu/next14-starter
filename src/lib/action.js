@@ -1,5 +1,6 @@
 "use server";
 
+import { User, Post } from "./models";
 import { connectionToDb } from "./utils";
 
 export const addPost = async (prevState, formData) => {
@@ -23,24 +24,23 @@ export const addPost = async (prevState, formData) => {
 }
 
 export const addUser = async (prevState, formData) => {
-  const { username, email, password, img, isAdmin } = Object.fromEntries(formData);
+  console.log('formData :>> ', formData);
+  const { username, email, password, img } = Object.fromEntries(formData);
   try {
     connectionToDb()
 
-    const userId = new ObjectId()
+    // const userId = new ObjectId()
     const newUser = new User({
-      userId,
       username,
       email,
       password,
-      img,
-      isAdmin
+      img
     })
 
     await newUser.save()
     console.log('save user in db')
   } catch (error) {
     console.log(error);
-    throw new Error('Failed to fetch user');
+    return { error: "Something went wrong!" };
   }
 }
