@@ -1,0 +1,33 @@
+.container {
+  width: 70%;
+  max-width: 960px;
+  min-width: 300px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.wrap {
+  display: flex;
+  align-items: center;
+}
+
+.container input, .container select {
+  flex: 1;
+  padding: 10px;
+  border: none;
+}
+.container label {
+  display: inline-block;
+  width: 150px;
+}
+
+.container button {
+  padding: 10px;
+  color: white;
+  cursor: pointer;
+  border: none;
+  background-color: var(--btn);
+  margin-left: 150px;
+}

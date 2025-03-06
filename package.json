@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "antd": "^5.24.3",
     "aws4": "^1.13.2",
     "mongoose": "^8.0.0",
     "next": "14.0.4",
