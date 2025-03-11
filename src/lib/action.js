@@ -1,6 +1,6 @@
 "use server";
 
-import { User, Post } from "./models";
+import { User, Post, List } from "./models";
 import { connectionToDb } from "./utils";
 
 export const addPost = async (prevState, formData) => {
@@ -39,6 +39,26 @@ export const addUser = async (prevState, formData) => {
 
     await newUser.save()
     console.log('save user in db')
+  } catch (error) {
+    console.log(error);
+    return { error: "Something went wrong!" };
+  }
+}
+
+export const addList = async (formData) => {
+  const { room, startTime, manhour, content, personnel } = formData;
+  try {
+    connectionToDb()
+    const newList = new List({
+      room,
+      startTime,
+      manhour,
+      content,
+      personnel,
+      userId: 'admin'
+    })
+    await newList.save()
+    console.log('save list in db')
   } catch (error) {
     console.log(error);
     return { error: "Something went wrong!" };

@@ -55,5 +55,36 @@ const postSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+const listSchema = new mongoose.Schema(
+  {
+    room: {
+      type: String,
+      required: true,
+    },
+    startTime: {
+      type: String,
+      required: true,
+    },
+    manhour: {
+      type: String,
+      required: true,
+    },
+    content: {
+      type: String,
+      required: true,
+    },
+    personnel: {
+      type: String,
+      required: true,
+    },
+    userId: {
+      type: String,
+      required: true,
+    }
+  },
+  { timestamps: true }
+);
+
 export const User = mongoose.models?.User || mongoose.model("User", userSchema);
 export const Post = mongoose.models?.Post || mongoose.model("Post", postSchema);
+export const List = mongoose.models?.List || mongoose.model("List", listSchema);
