@@ -9,21 +9,41 @@ const userSchema = new mongoose.Schema(
       min: 3,
       max: 20,
     },
-    email: {
+    phone: {
       type: String,
       required: true,
-      unique: true,
-      max: 50,
+      unique: true, // 数据库中手机号唯一
+      min: 11,
+      max: 11,
     },
     password: {
       type: String,
     },
-    img: {
-      type: String,
-    },
+    // 身份 1: 管理员, 2: 普通用户
     isAdmin: {
-      type: Boolean,
-      default: false,
+      type: Number,
+      required: true,
+      default: 2,
+      validate: {
+        validator: function (v) {
+          return [1, 2].includes(v)
+        },
+        message: props => `${props.value}不属于身份值!`
+      },
+      enum: {
+        values: [1, 2],
+        message: "身份值必须是1或2",
+      }
+    },
+    // 状态 1: 启用, 2: 禁用
+    status: {
+      type: Number,
+      default: 1,
+      required: true,
+      enum: {
+        values: [1, 2],
+        message: "状态值必须是1或2",
+      }
     },
   },
   { timestamps: true }

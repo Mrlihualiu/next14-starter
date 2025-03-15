@@ -23,25 +23,29 @@ export const addPost = async (prevState, formData) => {
   }
 }
 
-export const addUser = async (prevState, formData) => {
+export const addUser = async (formData) => {
   console.log('formData :>> ', formData);
-  const { username, email, password, img } = Object.fromEntries(formData);
+  let { username, phone, password, isAdmin, status } = formData;
+  // 没有密码把密码设置成手机号
+  if (!password) { password = phone }
   try {
     connectionToDb()
-
-    // const userId = new ObjectId()
     const newUser = new User({
       username,
-      email,
+      phone,
       password,
-      img
+      isAdmin,
+      status
     })
 
     await newUser.save()
     console.log('save user in db')
+    return {
+      succees: true
+    }
   } catch (error) {
     console.log(error);
-    return { error: "Something went wrong!" };
+    return { succees: false, error: "Something went wrong!" };
   }
 }
 
@@ -59,8 +63,46 @@ export const addList = async (formData) => {
     })
     await newList.save()
     console.log('save list in db')
+    return {
+      succees: true
+    }
   } catch (error) {
     console.log(error);
     return { error: "Something went wrong!" };
+  }
+}
+
+export const getTickets = async () => {
+  try {
+    connectionToDb()
+    const tickets = await List.find().lean()
+    return tickets;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Failed to fetch posts');
+  }
+}
+
+export const getUsers = async () => {
+  try {
+    connectionToDb()
+    const users = await User.find().lean()
+    return users;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Failed to fetch posts');
+  }
+}
+
+export const updateUserStatus = async (params) => {
+  try {
+    connectionToDb()
+    await User.findByIdAndUpdate(params._id, { status: params.status })
+    return {
+      succees: true
+    }
+  } catch (error) {
+    console.log(error);
+    return { succees: false, error: "Something went wrong!" };
   }
 }

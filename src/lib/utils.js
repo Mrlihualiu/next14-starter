@@ -1,23 +1,37 @@
 const mongoose = require('mongoose');
 
-const contection = {}
 const DB_URL = 'mongodb+srv://chenxi:liu19921105@cluster0.ijw1i.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
 
+const MONGODB_URI = process.env.MONGODB_URI || DB_URL;
+
+if (!MONGODB_URI) {
+  throw new Error('请配置 MONGODB_URI 环境变量');
+}
+
+// 全局缓存连接（Serverless 环境适配）
+let cached = global.mongoose;
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
 
 export const connectionToDb = async () => {
-  try {
-    if (contection.isConnected) {
-      console.log("Already connected to database");
-      return;
-    }
-    const connectUrl = process.env.MONGO || DB_URL
-    console.log('mongoose :>> ', mongoose);
-    const db = await mongoose.connect(connectUrl);
-    console.log('db :>> ', db);
-    contection.isConnected = db.connections[0].readyState;
-    console.log('database connected!');
-  } catch (error) {
-    console.log(error);
-    throw new Error(error);
+  if (cached.conn) {
+    return cached.conn;
   }
+
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(MONGODB_URI).then((mo) => {
+      console.log('✅ MongoDB 连接成功');
+      return mo;
+    });
+  }
+
+  try {
+    cached.conn = await cached.promise;
+  } catch (error) {
+    cached.promise = null;
+    throw error;
+  }
+
+  return cached.conn;
 }
