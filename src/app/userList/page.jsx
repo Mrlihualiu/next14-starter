@@ -10,7 +10,8 @@ const UserList = () => {
   const [form] = Form.useForm()
 
   const fetchData = async () => {
-    const data = await getUsers()
+    const data = await getUsers() 
+    console.log(data)
     setUsers(data)
   }
 
