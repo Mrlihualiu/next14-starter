@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      min: 3,
+      min: 2,
       max: 20,
     },
     phone: {
