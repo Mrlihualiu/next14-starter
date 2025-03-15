@@ -1,0 +1,13 @@
+{
+  "presets": ["next/babel"],
+  "plugins": [
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "libraryDirectory": "lib", // 或 "es" 使用 ES 模块
+        "style": "css" // 自动加载组件对应的 CSS 样式
+      }
+    ]
+  ]
+}
