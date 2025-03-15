@@ -106,3 +106,33 @@ export const updateUserStatus = async (params) => {
     return { succees: false, error: "Something went wrong!" };
   }
 }
+
+export const login = async (formData) => {
+  console.log('formData :>> ', formData);
+  let { username, password,} = formData;
+  
+  
+  try {
+    connectionToDb()
+    const users = await User.find({username})
+    console.log(users);
+    if(users.length=== 0  ) {
+      return { succees: false, error: "用户名不存在!" };
+    } 
+    if(users.length > 0  ) {
+       if( users[0].password=== password){
+
+
+        
+        return { succees: true };
+       }else { 
+       return { succees: false, error: "密码不正确!" };
+       }
+
+      
+    } 
+  }catch (error) {
+    console.log(error);
+    return { succees: false, error: "Something went wrong!" };
+  }
+}
