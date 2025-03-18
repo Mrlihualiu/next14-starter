@@ -10,7 +10,7 @@ const UserList = () => {
   const [form] = Form.useForm()
 
   const fetchData = async () => {
-    const data = await getUsers() 
+    const data = await getUsers()
     console.log(data)
     setUsers(data)
   }
@@ -26,6 +26,8 @@ const UserList = () => {
       if (res.succees) {
         fetchData()
         setModalOpen(false)
+      } else {
+        message.error(res.error)
       }
     } catch (error) {
       console.log('error', error)
@@ -90,10 +92,18 @@ const UserList = () => {
       render: (text, record) => {
         return (
           <div>
-            <Button type='text' onClick={() => handleEdit(record)}>
+            <Button
+              type='primary'
+              size='small'
+              onClick={() => handleEdit(record)}
+            >
               编辑
             </Button>
-            <Button type='text' onClick={() => handleChangeStatus(record)}>
+            <Button
+              type='primary'
+              size='small'
+              onClick={() => handleChangeStatus(record)}
+            >
               {record.status === 1 ? '禁用' : '启用'}
             </Button>
           </div>

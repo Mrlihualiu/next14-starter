@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema(
   {
@@ -48,6 +49,19 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// 保存前哈希密码
+userSchema.pre('save', async function (next) {
+  if (this.isModified('password') || this.isNew) {
+    const hash = await bcrypt.hash(this.password, 10);
+    this.password = hash;
+  }
+  next();
+})
+// 验证密码方法
+userSchema.methods.comparePassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
 
 const postSchema = new mongoose.Schema(
   {

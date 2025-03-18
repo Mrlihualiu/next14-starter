@@ -1,6 +1,7 @@
 import Footer from '@/components/footer/Footer'
 import SlierMenu from '@/components/menu/Menu'
 import { Inter } from 'next/font/google'
+import { AntdRegistry } from '@ant-design/nextjs-registry';
 import './globals.css'
 
 
@@ -15,15 +16,17 @@ export default function RootLayout ({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="wrap">
-          <div className='slider-menu'>
-            <SlierMenu />
+        <AntdRegistry>
+          <div className="wrap">
+            <div className='slider-menu'>
+              <SlierMenu />
+            </div>
+            <div className='container'>
+              <main className="main">{children}</main>
+              <Footer />
+            </div>
           </div>
-          <div className='container'>
-            <main className="main">{children}</main>
-            <Footer />
-          </div>
-        </div>
+        </AntdRegistry>
       </body>
     </html>
   )

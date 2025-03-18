@@ -2,6 +2,8 @@
 
 import { User, Post, List } from "./models";
 import { connectionToDb } from "./utils";
+import bcrypt from "bcrypt";
+import { signIn, signOut } from "./auth";
 
 export const addPost = async (prevState, formData) => {
   const { title, desc, slug, userId, img } = Object.fromEntries(formData);
@@ -24,16 +26,26 @@ export const addPost = async (prevState, formData) => {
 }
 
 export const addUser = async (formData) => {
-  console.log('formData :>> ', formData);
   let { username, phone, password, isAdmin, status } = formData;
-  // 没有密码把密码设置成手机号
-  if (!password) { password = phone }
   try {
     connectionToDb()
+    const user = await User.findOne({ phone })
+    if (user) {
+      return {
+        succees: false,
+        error: "用户已经存在!"
+      }
+    }
+    // 不填密码，默认为手机号
+    if (!password) {
+      password = phone
+    }
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(password, salt)
     const newUser = new User({
       username,
       phone,
-      password,
+      password: hashedPassword,
       isAdmin,
       status
     })
@@ -97,7 +109,7 @@ export const getUsers = async () => {
 export const updateUserStatus = async (params) => {
   try {
     connectionToDb()
-    await User.findByIdAndUpdate(params._id, { status: params.status })
+    await User.findByIdAndUpdate(params.phone, { status: params.status })
     return {
       succees: true
     }
@@ -108,31 +120,22 @@ export const updateUserStatus = async (params) => {
 }
 
 export const login = async (formData) => {
-  console.log('formData :>> ', formData);
-  let { username, password,} = formData;
-  
-  
+  const { username, password, } = formData;
   try {
     connectionToDb()
-    const users = await User.find({username})
-    console.log(users);
-    if(users.length=== 0  ) {
-      return { succees: false, error: "用户名不存在!" };
-    } 
-    if(users.length > 0  ) {
-       if( users[0].password=== password){
-
-
-        
-        return { succees: true };
-       }else { 
-       return { succees: false, error: "密码不正确!" };
-       }
-
-      
-    } 
-  }catch (error) {
-    console.log(error);
-    return { succees: false, error: "Something went wrong!" };
+    await signIn('credentials', { username, password })
+  } catch (error) {
+    console.log('login error ==> ', error)
+    if (error?.message?.includes("CredentialsSignin")) {
+      return {
+        succees: false,
+        error: "用户名或密码错误!"
+      }
+    }
   }
 }
+
+export const handleLogout = async () => {
+  "use server";
+  await signOut();
+};
